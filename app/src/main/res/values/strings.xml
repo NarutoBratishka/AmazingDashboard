@@ -15,4 +15,7 @@
     <string name="ac_sign_out">Выход</string>
     <string name="email_example">katorabian@gmail.com</string>
 
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
 </resources>
