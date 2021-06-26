@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">AmazingDashboard</string>
+
+    <!-- Drawer Menu Strings    -->
+    <string name="adverts">Объявления</string>
+    <string name="ad_my_ads">Мои объявления</string>
+    <string name="ad_car">Автомобили</string>
+    <string name="ad_pc">Компьютеры</string>
+    <string name="ad_smartphone">Смартфоны</string>
+    <string name="ad_domestic">Бытовая техника</string>
+
+    <string name="account">Аккаунт</string>
+    <string name="ac_sign_up">Регистрация</string>
+    <string name="ac_sign_in">Вход</string>
+    <string name="ac_sign_out">Выход</string>
+
 </resources>
