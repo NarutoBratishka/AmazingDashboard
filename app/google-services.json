@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "510693171368",
+    "project_id": "amazingdashboard-9ba81",
+    "storage_bucket": "amazingdashboard-9ba81.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:510693171368:android:e6312ccdc1496ff110229d",
+        "android_client_info": {
+          "package_name": "ru.alexeysekatskiy.amazingdashboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "510693171368-kdtb3n5gqaci384ukifo1h36petadfa9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwWDWyTmfDhp_Fwo4ZvU_adMc2GpsprsE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "510693171368-kdtb3n5gqaci384ukifo1h36petadfa9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
