@@ -6,7 +6,7 @@ import ru.alexeysekatskiy.amazingdashboard.R
 import ru.alexeysekatskiy.amazingdashboard.accountHelper.SignHelper
 import ru.alexeysekatskiy.amazingdashboard.databinding.SignDialogBinding
 
-class SignDialogHelper(private val mActivity: MainActivity) {
+class SignDialog(private val mActivity: MainActivity) {
     private val signHelper = SignHelper(mActivity)
 
 

@@ -10,11 +10,11 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import ru.alexeysekatskiy.amazingdashboard.databinding.ActivityMainBinding
 import ru.alexeysekatskiy.amazingdashboard.dialogHelper.DialogConst
-import ru.alexeysekatskiy.amazingdashboard.dialogHelper.SignDialogHelper
+import ru.alexeysekatskiy.amazingdashboard.dialogHelper.SignDialog
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var rootElement: ActivityMainBinding
-    private val dialogHelper = SignDialogHelper(this)
+    private val dialogHelper = SignDialog(this)
     val mAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
