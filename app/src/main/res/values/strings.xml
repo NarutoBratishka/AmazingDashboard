@@ -18,4 +18,11 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
 
+    <!-- Sign Dialog    -->
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="sign_up_action">Зарегистрироваться</string>
+    <string name="sign_in_action">Войти</string>
+    <string name="forget_password">Забыли пароль?</string>
+
 </resources>
