@@ -13,7 +13,7 @@
     <string name="ac_sign_up">Регистрация</string>
     <string name="ac_sign_in">Вход</string>
     <string name="ac_sign_out">Выход</string>
-    <string name="email_example">katorabian@gmail.com</string>
+    <string name="not_reg_email">Войдите или зарегистрируйтесь</string>
 
     <string name="open">Open</string>
     <string name="close">Close</string>
@@ -24,7 +24,8 @@
     <string name="sign_up_action">Зарегистрироваться</string>
     <string name="sign_in_action">Войти</string>
     <string name="forget_password">Забыли пароль?</string>
-    <string name="sign_up_error">Не удалось зарегистрироваться</string>
+    <string name="sign_up_error">Не удалось зарегистрироваться!</string>
+    <string name="sign_in_error">Не удалось войти!</string>
     <string name="send_verification_error">Не удалось отправить email для подтверждения!</string>
     <string name="send_verification_done">На вашу почту была отправлена ссылка для подтверждения аккаунта</string>
 

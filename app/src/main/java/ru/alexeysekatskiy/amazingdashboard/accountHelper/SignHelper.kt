@@ -9,10 +9,11 @@ class SignHelper(private val mActivity: MainActivity) {
 
     fun signUpWithEmail(email: String, password: String) {
         if (email.isNotEmpty() && password.isNotEmpty()) {
-            mActivity.mAuth.createUserWithEmailAndPassword(email, password)
+            mActivity.mAuth.createUserWithEmailAndPassword(email.trim(), password)
                 .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    task.result?.user?.let { mUser -> sendEmailVerification(mUser) }
+                    task.result!!.user?.let { mUser -> sendEmailVerification(mUser) }
+                    mActivity.uiUpdate(task.result!!.user)
                 } else {
                     Toast.makeText(mActivity,
                         mActivity.resources.getString(R.string.sign_up_error),
@@ -20,6 +21,25 @@ class SignHelper(private val mActivity: MainActivity) {
                     .show()
                 }
             }
+        }
+    }
+
+    fun signInWithEmail(email: String, password: String) {
+        if (email.isNotEmpty() && password.isNotEmpty()) {
+            mActivity.mAuth.signInWithEmailAndPassword(email.trim(), password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        task.result!!.user?.let { mUser ->
+//                            sendEmailVerification(mUser)
+                        }
+                        mActivity.uiUpdate(task.result!!.user)
+                    } else {
+                        Toast.makeText(mActivity,
+                            mActivity.resources.getString(R.string.sign_in_error),
+                            Toast.LENGTH_LONG)
+                        .show()
+                    }
+                }
         }
     }
 
