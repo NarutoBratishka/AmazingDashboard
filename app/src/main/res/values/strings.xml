@@ -28,5 +28,6 @@
     <string name="sign_in_error">Не удалось войти!</string>
     <string name="send_verification_error">Не удалось отправить email для подтверждения!</string>
     <string name="send_verification_done">На вашу почту была отправлена ссылка для подтверждения аккаунта</string>
+    <string name="reset_password_sent">Пароль выслан на электронную почту</string>
 
 </resources>
