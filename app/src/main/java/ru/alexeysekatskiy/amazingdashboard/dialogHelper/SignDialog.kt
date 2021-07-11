@@ -1,8 +1,10 @@
 package ru.alexeysekatskiy.amazingdashboard.dialogHelper
 
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import ru.alexeysekatskiy.amazingdashboard.MainActivity
 import ru.alexeysekatskiy.amazingdashboard.R
 import ru.alexeysekatskiy.amazingdashboard.accountHelper.SignHelper
@@ -10,7 +12,7 @@ import ru.alexeysekatskiy.amazingdashboard.databinding.SignDialogBinding
 
 class SignDialog(private val mActivity: MainActivity) {
     private val signHelper = SignHelper(mActivity)
-
+    var forgListInit = false
 
     fun createSignDialog(index: Int) {
         val builder = AlertDialog.Builder(mActivity)
@@ -25,6 +27,15 @@ class SignDialog(private val mActivity: MainActivity) {
         }
         layoutElement.btForgetPassword.setOnClickListener {
             resetPasswordOnClickListener(layoutElement, dialog)
+            layoutElement.etSignPassword.visibility = View.GONE
+            layoutElement.btSignUpIn.visibility = View.GONE
+            layoutElement.btForgetPassword.apply {
+                text = "Выслать на почту"
+                background = layoutElement.btSignUpIn.background
+                setTextColor(mActivity.resources.getColor(android.R.color.white))
+                (layoutParams as ConstraintLayout.LayoutParams)
+                        .topToBottom = layoutElement.etSignEmail.id
+            }
         }
 
         dialog.show()
@@ -34,16 +45,16 @@ class SignDialog(private val mActivity: MainActivity) {
         if (layoutElement.etSignEmail.text.isNotEmpty()) {
             mActivity.mAuth.sendPasswordResetEmail(layoutElement.etSignEmail.text.toString())
             .addOnCompleteListener { task ->
-                if (task.isSuccessful)
+                if (task.isSuccessful) {
                     Toast.makeText(
-                        mActivity, mActivity.getString(R.string.reset_password_sent), Toast.LENGTH_LONG
+                            mActivity, mActivity.getString(R.string.reset_password_sent), Toast.LENGTH_LONG
                     ).show()
+                    dialog.dismiss()
+                }
             }
-            dialog.dismiss()
         } else {
-            Toast.makeText(
-                    mActivity, "Для восстановления пароля, пожалуйста, введите ваш email адресс", Toast.LENGTH_LONG
-            ).show()
+            if (!forgListInit) forgListInit = true
+            else layoutElement.tvResetHint.visibility = View.VISIBLE
         }
     }
 

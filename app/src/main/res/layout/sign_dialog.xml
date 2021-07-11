@@ -17,6 +17,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tv_reset_hint"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
+        android:text="@string/reset_password_hint"
+        android:textColor="@color/design_default_color_error"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/et_sign_email"
+        app:layout_constraintStart_toStartOf="@+id/et_sign_email"
+        app:layout_constraintTop_toBottomOf="@+id/tv_sign_title" />
+
     <EditText
         android:id="@+id/et_sign_email"
         android:layout_width="0dp"
@@ -29,7 +42,7 @@
         android:inputType="textPersonName|textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_sign_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_reset_hint" />
 
     <EditText
         android:id="@+id/et_sign_password"
@@ -61,7 +74,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/forget_password"
+        android:textColor="@color/black"
+        android:background="@android:color/transparent"
         android:visibility="gone"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="@+id/et_sign_email"
         app:layout_constraintStart_toStartOf="@+id/et_sign_email"
         app:layout_constraintTop_toBottomOf="@+id/bt_sign_up_in" />
