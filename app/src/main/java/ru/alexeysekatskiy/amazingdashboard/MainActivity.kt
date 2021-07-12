@@ -1,17 +1,23 @@
 package ru.alexeysekatskiy.amazingdashboard
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.common.api.ApiException
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import ru.alexeysekatskiy.amazingdashboard.databinding.ActivityMainBinding
 import ru.alexeysekatskiy.amazingdashboard.dialogHelper.DialogConst
+import ru.alexeysekatskiy.amazingdashboard.dialogHelper.GoogleAccConst
+import ru.alexeysekatskiy.amazingdashboard.dialogHelper.GoogleAccConst.GOOGLE_SIGN_IN_REQUEST_CODE
 import ru.alexeysekatskiy.amazingdashboard.dialogHelper.SignDialog
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -77,5 +83,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun uiUpdate(user: FirebaseUser?) {
         tvAccountEmail.text = if (user != null) user.email
                               else resources.getString(R.string.not_reg_email)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            GOOGLE_SIGN_IN_REQUEST_CODE -> {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+                try {
+                    val account = task.getResult(ApiException::class.java)
+                    account?.let {
+                        dialogHelper.signHelper.signInFirebaseWithGoogle(it.idToken!!)
+                    }
+                } catch (ex: ApiException) {
+                    Log.d("", ex.message?: "")
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

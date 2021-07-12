@@ -46,6 +46,7 @@ dependencies {
     implementation "com.google.firebase:firebase-auth-ktx:$firebase_version"
     implementation "com.google.firebase:firebase-database-ktx:$firebase_version"
     implementation "com.google.firebase:firebase-storage-ktx:$firebase_version"
+    implementation "com.google.android.gms:play-services-auth:19.0.0"
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

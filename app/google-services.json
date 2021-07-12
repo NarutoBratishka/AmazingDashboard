@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "510693171368-nl7oso6cnvqgn8sctfu6r9giuq79kf7g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.alexeysekatskiy.amazingdashboard",
+            "certificate_hash": "088003b50ccd6eff837bc775f5bdd4358955b639"
+          }
+        },
+        {
           "client_id": "510693171368-kdtb3n5gqaci384ukifo1h36petadfa9.apps.googleusercontent.com",
           "client_type": 3
         }

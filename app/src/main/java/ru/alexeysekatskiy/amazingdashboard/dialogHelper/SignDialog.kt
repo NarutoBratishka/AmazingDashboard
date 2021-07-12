@@ -11,7 +11,7 @@ import ru.alexeysekatskiy.amazingdashboard.accountHelper.SignHelper
 import ru.alexeysekatskiy.amazingdashboard.databinding.SignDialogBinding
 
 class SignDialog(private val mActivity: MainActivity) {
-    private val signHelper = SignHelper(mActivity)
+    val signHelper = SignHelper(mActivity)
     var forgListInit = false
 
     fun createSignDialog(index: Int) {
@@ -37,8 +37,14 @@ class SignDialog(private val mActivity: MainActivity) {
                         .topToBottom = layoutElement.etSignEmail.id
             }
         }
+        layoutElement.btGoogleSignIn.setOnClickListener {
+            signHelper.signInWithGoogle()
+            dialog.dismiss()
+        }
 
         dialog.show()
+
+        layoutElement.etSignEmail.clearFocus()
     }
 
     private fun resetPasswordOnClickListener(layoutElement: SignDialogBinding, dialog: AlertDialog) {
