@@ -11,6 +11,7 @@ import ru.alexeysekatskiy.amazingdashboard.MainActivity
 import ru.alexeysekatskiy.amazingdashboard.R
 import ru.alexeysekatskiy.amazingdashboard.constants.FirebaseAuthConstants.ERROR_EMAIL_ALREADY_IN_USE
 import ru.alexeysekatskiy.amazingdashboard.constants.FirebaseAuthConstants.ERROR_INVALID_EMAIL
+import ru.alexeysekatskiy.amazingdashboard.constants.FirebaseAuthConstants.ERROR_USER_NOT_FOUND
 import ru.alexeysekatskiy.amazingdashboard.constants.FirebaseAuthConstants.ERROR_WEAK_PASSWORD
 import ru.alexeysekatskiy.amazingdashboard.constants.FirebaseAuthConstants.ERROR_WRONG_PASSWORD
 import ru.alexeysekatskiy.amazingdashboard.dialogHelper.GoogleAccConst.GOOGLE_SIGN_IN_REQUEST_CODE
@@ -85,9 +86,7 @@ class SignHelper(private val mActivity: MainActivity) {
                         }
                         mActivity.uiUpdate(task.result!!.user)
                     } else {
-                        Toast.makeText(mActivity,
-                            mActivity.resources.getString(R.string.sign_in_error),
-                            Toast.LENGTH_LONG).show()
+//                        Toast.makeText(mActivity, mActivity.resources.getString(R.string.sign_in_error), Toast.LENGTH_LONG).show()
 
                     Log.d("qwe", "Exception: ${task.exception}")
                     val ex = task.exception
@@ -97,6 +96,10 @@ class SignHelper(private val mActivity: MainActivity) {
                                     Toast.makeText(mActivity, ERROR_INVALID_EMAIL, Toast.LENGTH_LONG).show()
                                 ERROR_WRONG_PASSWORD ->
                                     Toast.makeText(mActivity, ERROR_WRONG_PASSWORD, Toast.LENGTH_LONG).show()
+                            }
+                        } else if (ex is FirebaseAuthInvalidUserException) {
+                            when (ex.errorCode) {
+                                ERROR_USER_NOT_FOUND -> Toast.makeText(mActivity, mActivity.getString(R.string.error_user_not_found), Toast.LENGTH_LONG).show()
                             }
                         }
                     }
