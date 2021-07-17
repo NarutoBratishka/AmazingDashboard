@@ -27,16 +27,14 @@ class SignHelper(private val mActivity: MainActivity) {
                     task.result!!.user?.let { mUser -> sendEmailVerification(mUser) }
                     mActivity.uiUpdate(task.result!!.user)
                 } else {
-                    Toast.makeText(mActivity,
-                        mActivity.resources.getString(R.string.sign_up_error),
-                        Toast.LENGTH_SHORT).show()
+                    showToast(mActivity.resources.getString(R.string.sign_up_error))
 
 //                    Log.d("qwe", "Exception: ${task.exception}")
                     val ex = task.exception
                     if (ex is FirebaseAuthUserCollisionException) {
                         when (ex.errorCode) {
                             ERROR_EMAIL_ALREADY_IN_USE -> {
-//                                Toast.makeText(mActivity, ERROR_EMAIL_ALREADY_IN_USE, Toast.LENGTH_LONG).show()
+                                showToast(ERROR_EMAIL_ALREADY_IN_USE)
                                 linkEmailToGoogle(email, password)
                             }
                         }
@@ -44,8 +42,7 @@ class SignHelper(private val mActivity: MainActivity) {
                     } else if (ex is FirebaseAuthInvalidCredentialsException) {
                         when (ex.errorCode) {
                             ERROR_INVALID_EMAIL ->
-                                Toast.makeText(mActivity, ERROR_INVALID_EMAIL,
-                                    Toast.LENGTH_LONG).show()
+                                showToast(ERROR_INVALID_EMAIL)
                         }
                     }
 
@@ -53,8 +50,7 @@ class SignHelper(private val mActivity: MainActivity) {
                         Log.d("qwe", "Exception: ${ex.errorCode}")
                         when (ex.errorCode) {
                             ERROR_INVALID_EMAIL ->
-                                Toast.makeText(mActivity, ERROR_WEAK_PASSWORD,
-                                    Toast.LENGTH_LONG).show()
+                                showToast(ERROR_WEAK_PASSWORD)
                         }
                     }
                 }
@@ -68,11 +64,11 @@ class SignHelper(private val mActivity: MainActivity) {
         if (currentUser != null) {
             currentUser.linkWithCredential(credential)?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(mActivity, mActivity.getString(R.string.link_email_done), Toast.LENGTH_SHORT).show()
+                    showToast(mActivity.getString(R.string.link_email_done))
                 }
             }
         } else {
-            Toast.makeText(mActivity, mActivity.getString(R.string.link_email_error), Toast.LENGTH_SHORT).show()
+            showToast(mActivity.getString(R.string.link_email_error))
         }
     }
 
@@ -86,20 +82,21 @@ class SignHelper(private val mActivity: MainActivity) {
                         }
                         mActivity.uiUpdate(task.result!!.user)
                     } else {
-//                        Toast.makeText(mActivity, mActivity.resources.getString(R.string.sign_in_error), Toast.LENGTH_LONG).show()
+//                        showToast(mActivity.resources.getString(R.string.sign_in_error))
 
                     Log.d("qwe", "Exception: ${task.exception}")
                     val ex = task.exception
                         if (ex is FirebaseAuthInvalidCredentialsException) {
                             when (ex.errorCode) {
                                 ERROR_INVALID_EMAIL ->
-                                    Toast.makeText(mActivity, ERROR_INVALID_EMAIL, Toast.LENGTH_LONG).show()
+                                    showToast(ERROR_INVALID_EMAIL)
                                 ERROR_WRONG_PASSWORD ->
-                                    Toast.makeText(mActivity, ERROR_WRONG_PASSWORD, Toast.LENGTH_LONG).show()
+                                    showToast(ERROR_WRONG_PASSWORD)
                             }
                         } else if (ex is FirebaseAuthInvalidUserException) {
                             when (ex.errorCode) {
-                                ERROR_USER_NOT_FOUND -> Toast.makeText(mActivity, mActivity.getString(R.string.error_user_not_found), Toast.LENGTH_LONG).show()
+                                ERROR_USER_NOT_FOUND ->
+                                    showToast(mActivity.getString(R.string.error_user_not_found))
                             }
                         }
                     }
@@ -110,15 +107,9 @@ class SignHelper(private val mActivity: MainActivity) {
     private fun sendEmailVerification(user: FirebaseUser) {
         user.sendEmailVerification().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Toast.makeText(mActivity,
-                    mActivity.resources.getString(R.string.send_verification_done),
-                    Toast.LENGTH_LONG)
-                .show()
+                showToast(mActivity.resources.getString(R.string.send_verification_done))
             } else {
-                Toast.makeText(mActivity,
-                    mActivity.resources.getString(R.string.send_verification_error),
-                    Toast.LENGTH_LONG)
-                .show()
+                showToast(mActivity.resources.getString(R.string.send_verification_error))
             }
         }
     }
@@ -144,12 +135,10 @@ class SignHelper(private val mActivity: MainActivity) {
         val credential = GoogleAuthProvider.getCredential(token, null)
         mActivity.mAuth.signInWithCredential(credential).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Toast.makeText(mActivity, "Sign in is done", Toast.LENGTH_SHORT).show()
+                showToast("Sign in is done")
                 mActivity.uiUpdate(task.result!!.user)
             } else {
-                Toast.makeText(mActivity,
-                        mActivity.resources.getString(R.string.sign_up_error),
-                        Toast.LENGTH_SHORT).show()
+                showToast(mActivity.resources.getString(R.string.sign_up_error))
 
                     Log.d("qwe", "Exception: ${task.exception}")
 //                val ex = task.exception
@@ -163,5 +152,7 @@ class SignHelper(private val mActivity: MainActivity) {
         }
     }
 
-
+    private fun showToast(message: String) {
+        Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show()
+    }
 }
