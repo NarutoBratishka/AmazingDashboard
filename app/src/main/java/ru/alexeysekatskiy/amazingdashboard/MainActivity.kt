@@ -15,6 +15,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import ru.alexeysekatskiy.amazingdashboard.activities.EditAdsActivity
 import ru.alexeysekatskiy.amazingdashboard.databinding.ActivityMainBinding
 import ru.alexeysekatskiy.amazingdashboard.dialogHelper.DialogConst
 import ru.alexeysekatskiy.amazingdashboard.dialogHelper.GoogleAccConst
@@ -43,6 +44,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.id_new_ads) {
+            val intent = Intent(this, EditAdsActivity::class.java)
+            startActivity(intent)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun init() {
