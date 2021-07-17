@@ -126,6 +126,10 @@ class SignHelper(private val mActivity: MainActivity) {
         mActivity.startActivityForResult(intent, GOOGLE_SIGN_IN_REQUEST_CODE)
     }
 
+    fun signOutGoogle() {
+        getSignInClient().signOut()
+    }
+
     private fun getSignInClient(): GoogleSignInClient {
         val gSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(mActivity.getString(R.string.default_web_client_id)).requestEmail().build()
