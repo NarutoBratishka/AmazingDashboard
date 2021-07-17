@@ -30,5 +30,8 @@
     <string name="send_verification_done">На вашу почту была отправлена ссылка для подтверждения аккаунта</string>
     <string name="reset_password_sent">Пароль выслан на электронную почту</string>
     <string name="reset_password_hint">Для восстановления пароля введите ваш email!</string>
+    <!-- Sign Dialog    -->
+    <string name="link_email_done">Связывание email и google аккаунта прошло успешно!</string>
+    <string name="link_email_error">У вас уже есть Google аккаунт с этим email.\nВойдите в этот аккаунт, затем затем повторно зарегистрируйтесь по email, чтобы связать эти аккаунты</string>
 
 </resources>

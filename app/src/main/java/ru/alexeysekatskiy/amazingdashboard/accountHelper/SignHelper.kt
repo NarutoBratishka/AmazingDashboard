@@ -2,6 +2,7 @@ package ru.alexeysekatskiy.amazingdashboard.accountHelper
 
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -33,9 +34,10 @@ class SignHelper(private val mActivity: MainActivity) {
                     val ex = task.exception
                     if (ex is FirebaseAuthUserCollisionException) {
                         when (ex.errorCode) {
-                            ERROR_EMAIL_ALREADY_IN_USE ->
-                                Toast.makeText(mActivity, ERROR_EMAIL_ALREADY_IN_USE,
-                                    Toast.LENGTH_LONG).show()
+                            ERROR_EMAIL_ALREADY_IN_USE -> {
+//                                Toast.makeText(mActivity, ERROR_EMAIL_ALREADY_IN_USE, Toast.LENGTH_LONG).show()
+                                linkEmailToGoogle(email, password)
+                            }
                         }
 
                     } else if (ex is FirebaseAuthInvalidCredentialsException) {
@@ -56,6 +58,20 @@ class SignHelper(private val mActivity: MainActivity) {
                     }
                 }
             }
+        }
+    }
+
+    private fun linkEmailToGoogle(email: String, password: String) {
+        val credential = EmailAuthProvider.getCredential(email, password)
+        val currentUser = mActivity.mAuth.currentUser
+        if (currentUser != null) {
+            currentUser.linkWithCredential(credential)?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(mActivity, mActivity.getString(R.string.link_email_done), Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            Toast.makeText(mActivity, mActivity.getString(R.string.link_email_error), Toast.LENGTH_SHORT).show()
         }
     }
 
