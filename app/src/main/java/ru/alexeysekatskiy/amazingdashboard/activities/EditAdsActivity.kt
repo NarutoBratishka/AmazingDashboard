@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import ru.alexeysekatskiy.amazingdashboard.R
 import ru.alexeysekatskiy.amazingdashboard.databinding.ActivityEditAdsBinding
+import ru.alexeysekatskiy.amazingdashboard.dialogs.DialogSpinnerHelper
 import ru.alexeysekatskiy.amazingdashboard.utils.LocalityHelper
 
 class EditAdsActivity : AppCompatActivity() {
@@ -15,10 +16,8 @@ class EditAdsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(rootView)
 
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item,
-                LocalityHelper.getAllCountries(this))
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        rootElement.spCountry.adapter = adapter
+        val listCountry = LocalityHelper.getAllCountries(this)
+        val dialog = DialogSpinnerHelper()
+        dialog.showSpinnerDialog(this, listCountry)
     }
 }
