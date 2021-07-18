@@ -17,10 +17,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import ru.alexeysekatskiy.amazingdashboard.activities.EditAdsActivity
 import ru.alexeysekatskiy.amazingdashboard.databinding.ActivityMainBinding
-import ru.alexeysekatskiy.amazingdashboard.dialogHelper.DialogConst
-import ru.alexeysekatskiy.amazingdashboard.dialogHelper.GoogleAccConst
-import ru.alexeysekatskiy.amazingdashboard.dialogHelper.GoogleAccConst.GOOGLE_SIGN_IN_REQUEST_CODE
-import ru.alexeysekatskiy.amazingdashboard.dialogHelper.SignDialog
+import ru.alexeysekatskiy.amazingdashboard.signDialogHelper.DialogConst
+import ru.alexeysekatskiy.amazingdashboard.signDialogHelper.GoogleAccConst.GOOGLE_SIGN_IN_REQUEST_CODE
+import ru.alexeysekatskiy.amazingdashboard.signDialogHelper.SignDialog
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var rootElement: ActivityMainBinding

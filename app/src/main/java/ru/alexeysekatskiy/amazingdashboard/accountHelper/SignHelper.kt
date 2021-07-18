@@ -2,7 +2,6 @@ package ru.alexeysekatskiy.amazingdashboard.accountHelper
 
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -14,7 +13,7 @@ import ru.alexeysekatskiy.amazingdashboard.constants.FirebaseAuthConstants.ERROR
 import ru.alexeysekatskiy.amazingdashboard.constants.FirebaseAuthConstants.ERROR_USER_NOT_FOUND
 import ru.alexeysekatskiy.amazingdashboard.constants.FirebaseAuthConstants.ERROR_WEAK_PASSWORD
 import ru.alexeysekatskiy.amazingdashboard.constants.FirebaseAuthConstants.ERROR_WRONG_PASSWORD
-import ru.alexeysekatskiy.amazingdashboard.dialogHelper.GoogleAccConst.GOOGLE_SIGN_IN_REQUEST_CODE
+import ru.alexeysekatskiy.amazingdashboard.signDialogHelper.GoogleAccConst.GOOGLE_SIGN_IN_REQUEST_CODE
 
 class SignHelper(private val mActivity: MainActivity) {
     private lateinit var googleSignInClient: GoogleSignInClient

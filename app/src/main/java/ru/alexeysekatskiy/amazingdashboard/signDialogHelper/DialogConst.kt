@@ -1,4 +1,4 @@
-package ru.alexeysekatskiy.amazingdashboard.dialogHelper
+package ru.alexeysekatskiy.amazingdashboard.signDialogHelper
 
 object DialogConst {
     const val SIGN_UP_STATE = 0

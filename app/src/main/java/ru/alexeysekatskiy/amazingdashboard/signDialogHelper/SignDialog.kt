@@ -1,7 +1,6 @@
-package ru.alexeysekatskiy.amazingdashboard.dialogHelper
+package ru.alexeysekatskiy.amazingdashboard.signDialogHelper
 
 import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
