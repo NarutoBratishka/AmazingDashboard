@@ -23,9 +23,25 @@ object LocalityHelper {
                 countries.add(countryNames.getString(n))
             }
         } catch (ex: IOException) {
-
+            //TODO
         }
 
         return countries
+    }
+
+    fun filterListData(toFilter: List<String>, searchText: String?): List<String> {
+        val tempList = mutableListOf<String>()
+
+        searchText?.let {
+            for (selection in toFilter) {
+                if (selection.contains(searchText, true))
+                    tempList.add(selection)
+            }
+        }
+
+        if (tempList.isEmpty() || searchText == null)
+            return listOf("Нет совпадений")
+
+        return tempList
     }
 }
