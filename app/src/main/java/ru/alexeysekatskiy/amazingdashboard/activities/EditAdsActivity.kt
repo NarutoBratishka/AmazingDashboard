@@ -3,7 +3,7 @@ package ru.alexeysekatskiy.amazingdashboard.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import ru.alexeysekatskiy.amazingdashboard.R
 import ru.alexeysekatskiy.amazingdashboard.databinding.ActivityEditAdsBinding
@@ -28,6 +28,20 @@ class EditAdsActivity : AppCompatActivity() {
 
     fun onClickSelectCountry(view: View) {
         val listCountry = LocalityHelper.getAllCountries(this)
-        DialogSpinnerHelper().showSpinnerDialog(this, listCountry)
+        DialogSpinnerHelper().showSpinnerDialog(this, listCountry, rootElement.tvCountryEditAds)
+        if (rootElement.tvCityEditAds.text.toString() != getString(R.string.select_city)) {
+            rootElement.tvCityEditAds.text = getString(R.string.select_city)
+        }
+    }
+
+    fun onClickSelectCity(view: View) {
+        val selectedCountry = rootElement.tvCountryEditAds.text.toString()
+        if (selectedCountry != getString(R.string.select_country)) {
+            val listCity =
+                LocalityHelper.getAllCities(this, selectedCountry)
+            DialogSpinnerHelper().showSpinnerDialog(this, listCity, rootElement.tvCityEditAds)
+        } else {
+            Toast.makeText(this, "Необходимо сперва выбрать страну", Toast.LENGTH_SHORT).show()
+        }
     }
 }

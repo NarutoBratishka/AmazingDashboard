@@ -5,11 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import ru.alexeysekatskiy.amazingdashboard.R
 import ru.alexeysekatskiy.amazingdashboard.activities.EditAdsActivity
 
-class RecyclerDialogSpinnerAdapter(private val context: Context):
+class RecyclerDialogSpinnerAdapter(private val dialog: AlertDialog, private val tvSelection: TextView):
     RecyclerView.Adapter<RecyclerDialogSpinnerAdapter.SpinnerViewHolder>() {
     private val itemList = mutableListOf<String>()
 
@@ -33,12 +34,9 @@ class RecyclerDialogSpinnerAdapter(private val context: Context):
             itemView.setOnClickListener(this)
         }
 
-        override fun onClick(v: View?) {
-            (context as EditAdsActivity).apply {
-                rootElement.tvCountryEditAds.text = tvSpElement.text
-                dialog.dismiss()
-            }
-
+        override fun onClick(view: View) {
+            tvSelection.text = tvSpElement.text
+            dialog.dismiss()
         }
     }
 

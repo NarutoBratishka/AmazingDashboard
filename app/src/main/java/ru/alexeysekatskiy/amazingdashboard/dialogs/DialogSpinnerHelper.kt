@@ -2,6 +2,7 @@ package ru.alexeysekatskiy.amazingdashboard.dialogs
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,10 +13,11 @@ import ru.alexeysekatskiy.amazingdashboard.utils.LocalityHelper
 
 class DialogSpinnerHelper {
 
-    fun showSpinnerDialog(context: Context, counties: List<String>) {
+    fun showSpinnerDialog(context: Context, counties: List<String>, tvSelection: TextView) {
         val builder = AlertDialog.Builder(context)
+        val dialog = builder.create()
         val rootView = LayoutInflater.from(context).inflate(R.layout.spinner_layout, null)
-        val adapter = RecyclerDialogSpinnerAdapter(context)
+        val adapter = RecyclerDialogSpinnerAdapter(dialog, tvSelection)
 
         val recycler = rootView.findViewById<RecyclerView>(R.id.rec_view_spinner)
         recycler.layoutManager = LinearLayoutManager(context)
@@ -23,9 +25,9 @@ class DialogSpinnerHelper {
         adapter.updateAdapterWith(counties)
         val searchView = rootView.findViewById<SearchView>(R.id.search_view_spinner)
 
-        builder.setView(rootView)
+        dialog.setView(rootView)
         setSearchViewListener(adapter, counties, searchView)
-        (context as EditAdsActivity).dialog = builder.show()
+        dialog.show()
     }
 
     private fun setSearchViewListener(adapter: RecyclerDialogSpinnerAdapter, localities: List<String>, searchView: SearchView) {

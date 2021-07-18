@@ -29,11 +29,26 @@
                 android:id="@+id/tv_country_edit_ads"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="5dp"
                 android:background="@android:drawable/editbox_background_normal"
                 android:onClick="onClickSelectCountry"
                 android:padding="10dp"
                 android:text="@string/select_country"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/tv_city_edit_ads"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@android:drawable/editbox_background_normal"
+                android:onClick="onClickSelectCity"
+                android:padding="10dp"
+                android:text="@string/select_city"
                 android:textColor="@android:color/black" />
 
         </LinearLayout>
