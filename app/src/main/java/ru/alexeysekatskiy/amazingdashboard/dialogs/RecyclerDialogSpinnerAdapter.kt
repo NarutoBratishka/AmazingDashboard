@@ -1,13 +1,15 @@
 package ru.alexeysekatskiy.amazingdashboard.dialogs
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.alexeysekatskiy.amazingdashboard.R
+import ru.alexeysekatskiy.amazingdashboard.activities.EditAdsActivity
 
-class RecyclerDialogSpinnerAdapter:
+class RecyclerDialogSpinnerAdapter(private val context: Context):
     RecyclerView.Adapter<RecyclerDialogSpinnerAdapter.SpinnerViewHolder>() {
     private val itemList = mutableListOf<String>()
 
@@ -24,10 +26,19 @@ class RecyclerDialogSpinnerAdapter:
         return itemList.size
     }
 
-    class SpinnerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class SpinnerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         private val tvSpElement = itemView.findViewById<TextView>(R.id.tv_sp_element)
         fun setData(text: String) {
             tvSpElement.text = text
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            (context as EditAdsActivity).apply {
+                rootElement.tvCountryEditAds.text = tvSpElement.text
+                dialog.dismiss()
+            }
+
         }
     }
 

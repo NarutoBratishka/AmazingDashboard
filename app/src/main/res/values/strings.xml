@@ -34,5 +34,7 @@
     <string name="link_email_done">Связывание email и google аккаунта прошло успешно!</string>
     <string name="link_email_error">У вас уже есть Google аккаунт с этим email.\nВойдите в этот аккаунт, затем затем повторно зарегистрируйтесь по email, чтобы связать эти аккаунты</string>
     <string name="error_user_not_found">Нет пользователя с таким email адресом</string>
-
+    <!-- Edit Activity    -->
+    <string name="select_country">*Выберите страну</string>
+    <string name="select_city">*Выберите город</string>
 </resources>
