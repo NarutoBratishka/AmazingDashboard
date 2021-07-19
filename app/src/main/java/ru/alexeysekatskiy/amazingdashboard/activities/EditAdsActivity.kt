@@ -1,18 +1,25 @@
 package ru.alexeysekatskiy.amazingdashboard.activities
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import com.fxn.pix.Pix
+import com.fxn.utility.PermUtil
 import ru.alexeysekatskiy.amazingdashboard.R
 import ru.alexeysekatskiy.amazingdashboard.databinding.ActivityEditAdsBinding
 import ru.alexeysekatskiy.amazingdashboard.dialogs.DialogSpinnerHelper
+import ru.alexeysekatskiy.amazingdashboard.utils.ImagePicker
 import ru.alexeysekatskiy.amazingdashboard.utils.LocalityHelper
+
 
 class EditAdsActivity : AppCompatActivity() {
     lateinit var rootElement: ActivityEditAdsBinding
-    lateinit var dialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         rootElement = ActivityEditAdsBinding.inflate(layoutInflater)
@@ -20,6 +27,40 @@ class EditAdsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(rootView)
         init()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == ImagePicker.REQUEST_CODE) {
+            data?.let {
+                val returnValue: List<String> = it.getStringArrayListExtra(Pix.IMAGE_RESULTS)!!
+                Log.d("qwe:", "Image: ${returnValue[0]}")
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS -> {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    ImagePicker.getImages(this)
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Approve permissions to open Pix ImagePicker",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                return
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     private fun init() {
@@ -43,5 +84,9 @@ class EditAdsActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Необходимо сперва выбрать страну", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun onClickGetImages(view: View) {
+        ImagePicker.getImages(this)
     }
 }
