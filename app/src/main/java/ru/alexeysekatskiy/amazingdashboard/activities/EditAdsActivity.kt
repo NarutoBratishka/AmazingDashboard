@@ -13,12 +13,13 @@ import com.fxn.utility.PermUtil
 import ru.alexeysekatskiy.amazingdashboard.R
 import ru.alexeysekatskiy.amazingdashboard.databinding.ActivityEditAdsBinding
 import ru.alexeysekatskiy.amazingdashboard.dialogs.DialogSpinnerHelper
+import ru.alexeysekatskiy.amazingdashboard.fragments.FragCloseInterface
 import ru.alexeysekatskiy.amazingdashboard.fragments.ImageListFragment
 import ru.alexeysekatskiy.amazingdashboard.utils.ImagePicker
 import ru.alexeysekatskiy.amazingdashboard.utils.LocalityHelper
 
 
-class EditAdsActivity : AppCompatActivity() {
+class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
     lateinit var rootElement: ActivityEditAdsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,8 +90,12 @@ class EditAdsActivity : AppCompatActivity() {
     fun onClickGetImages(view: View) {
         rootElement.scrollviewMain.visibility = View.GONE
         val fragMan = supportFragmentManager.beginTransaction()
-        fragMan.replace(R.id.place_holder, ImageListFragment())
+        fragMan.replace(R.id.place_holder, ImageListFragment(this))
         fragMan.commit()
 //        ImagePicker.getImages(this)
+    }
+
+    override fun onFragClose() {
+        rootElement.scrollviewMain.visibility = View.VISIBLE
     }
 }

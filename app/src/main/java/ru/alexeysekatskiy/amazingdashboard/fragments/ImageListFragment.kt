@@ -8,7 +8,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import ru.alexeysekatskiy.amazingdashboard.R
 
-class ImageListFragment: Fragment() {
+class ImageListFragment(val fragCloseInterface: FragCloseInterface): Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,5 +26,10 @@ class ImageListFragment: Fragment() {
                 commit()
             }
         }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        fragCloseInterface.onFragClose()
     }
 }
