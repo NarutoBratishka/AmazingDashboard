@@ -7,13 +7,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
 import ru.alexeysekatskiy.amazingdashboard.R
 import ru.alexeysekatskiy.amazingdashboard.databinding.ActivityEditAdsBinding
 import ru.alexeysekatskiy.amazingdashboard.dialogs.DialogSpinnerHelper
+import ru.alexeysekatskiy.amazingdashboard.fragments.ImageListFragment
 import ru.alexeysekatskiy.amazingdashboard.utils.ImagePicker
 import ru.alexeysekatskiy.amazingdashboard.utils.LocalityHelper
 
@@ -87,6 +87,10 @@ class EditAdsActivity : AppCompatActivity() {
     }
 
     fun onClickGetImages(view: View) {
-        ImagePicker.getImages(this)
+        rootElement.scrollviewMain.visibility = View.GONE
+        val fragMan = supportFragmentManager.beginTransaction()
+        fragMan.replace(R.id.place_holder, ImageListFragment())
+        fragMan.commit()
+//        ImagePicker.getImages(this)
     }
 }
