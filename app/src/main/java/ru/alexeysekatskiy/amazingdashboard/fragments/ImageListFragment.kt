@@ -6,9 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ru.alexeysekatskiy.amazingdashboard.R
 
-class ImageListFragment(val fragCloseInterface: FragCloseInterface): Fragment() {
+class ImageListFragment(private val fragCloseInterface: FragCloseInterface, private val images: List<String>): Fragment() {
+    val adapter = SelectImageRVAdapter()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -20,6 +24,17 @@ class ImageListFragment(val fragCloseInterface: FragCloseInterface): Fragment() 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val bBack = view.findViewById<Button>(R.id.b_back)
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.rc_view_select_image)
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.adapter = adapter
+
+        val newList = mutableListOf<SelectImageItem>()
+        for (i in images.indices) {
+            newList.add(SelectImageItem("${i+1}", images[i]))
+        }
+        adapter.updateAdapter(newList)
+
         bBack.setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()?.apply {
                 this.remove(this@ImageListFragment)
