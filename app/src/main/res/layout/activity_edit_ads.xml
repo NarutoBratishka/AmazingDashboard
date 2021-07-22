@@ -41,12 +41,12 @@
                     android:id="@+id/imageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:padding="10dp"
                     android:onClick="onClickGetImages"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="?attr/actionModeSelectAllDrawable" />
+                    android:src="@drawable/ic_add_photo"
+                    android:background="@android:color/transparent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
