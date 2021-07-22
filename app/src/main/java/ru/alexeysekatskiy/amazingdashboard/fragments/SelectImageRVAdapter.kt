@@ -8,9 +8,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.alexeysekatskiy.amazingdashboard.R
+import ru.alexeysekatskiy.amazingdashboard.utils.ItemTouchMoveCallback
 
-class SelectImageRVAdapter: RecyclerView.Adapter<SelectImageRVAdapter.ImageHolder>() {
-    private val imageList = mutableListOf<SelectImageItem>()
+class SelectImageRVAdapter: RecyclerView.Adapter<SelectImageRVAdapter.ImageHolder>(), ItemTouchMoveCallback.ItemTouchCallbackInterface {
+    val imageList = mutableListOf<SelectImageItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.select_image_frag_item, parent, false)
@@ -24,6 +25,11 @@ class SelectImageRVAdapter: RecyclerView.Adapter<SelectImageRVAdapter.ImageHolde
 
     override fun getItemCount(): Int {
         return imageList.size
+    }
+
+    override fun onMove(startPos: Int, targetPos: Int) {
+        imageList.apply { add(targetPos, removeAt(startPos)) }
+        notifyItemMoved(startPos, targetPos)
     }
 
     class ImageHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
