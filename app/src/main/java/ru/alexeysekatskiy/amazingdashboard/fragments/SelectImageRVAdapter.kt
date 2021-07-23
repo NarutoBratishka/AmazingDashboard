@@ -11,7 +11,7 @@ import ru.alexeysekatskiy.amazingdashboard.R
 import ru.alexeysekatskiy.amazingdashboard.utils.ItemTouchMoveCallback
 
 class SelectImageRVAdapter: RecyclerView.Adapter<SelectImageRVAdapter.ImageHolder>(), ItemTouchMoveCallback.ItemTouchCallbackInterface {
-    val imageList = mutableListOf<SelectImageItem>()
+    var imageList = mutableListOf<SelectImageItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.select_image_frag_item, parent, false)
@@ -28,8 +28,25 @@ class SelectImageRVAdapter: RecyclerView.Adapter<SelectImageRVAdapter.ImageHolde
     }
 
     override fun onMove(startPos: Int, targetPos: Int) {
-        imageList.apply { add(targetPos, removeAt(startPos)) }
+        /*imageList.apply { add(targetPos, removeAt(startPos)) }*/
+
+        /*imageList[startPos] = imageList[targetPos].also { imageList[targetPos] = imageList[startPos] }
+            imageList.apply {
+                imageList[startPos].title = imageList[targetPos].title.also { imageList[targetPos].title = imageList[startPos].title }
+            }*/
+
+        val targetItem = imageList[targetPos]
+        imageList[targetPos] = imageList[startPos]
+        val startTitle = imageList[startPos].title
+        imageList[targetPos].title = targetItem.title
+        imageList[startPos] = targetItem
+        imageList[startPos].title = startTitle
+
         notifyItemMoved(startPos, targetPos)
+    }
+
+    override fun onClear() {
+        notifyDataSetChanged()
     }
 
     class ImageHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
