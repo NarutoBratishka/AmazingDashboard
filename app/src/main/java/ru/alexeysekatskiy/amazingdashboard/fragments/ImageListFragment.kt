@@ -52,7 +52,7 @@ class ImageListFragment(private val fragCloseInterface: FragCloseInterface, priv
 
     override fun onDetach() {
         super.onDetach()
-        fragCloseInterface.onFragClose()
+        fragCloseInterface.onFragClose(adapter.imageList.map { it.uri })
         adapter.imageList.forEachIndexed { index, selectImageItem ->
             Log.d("qwe", "Title $index: ${selectImageItem.title}")
         }

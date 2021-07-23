@@ -4,13 +4,13 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
 import ru.alexeysekatskiy.amazingdashboard.R
+import ru.alexeysekatskiy.amazingdashboard.adapters.ImageAdapter
 import ru.alexeysekatskiy.amazingdashboard.databinding.ActivityEditAdsBinding
 import ru.alexeysekatskiy.amazingdashboard.dialogs.DialogSpinnerHelper
 import ru.alexeysekatskiy.amazingdashboard.fragments.FragCloseInterface
@@ -21,6 +21,7 @@ import ru.alexeysekatskiy.amazingdashboard.utils.LocalityHelper
 
 class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
     lateinit var rootElement: ActivityEditAdsBinding
+    private lateinit var imageAdapter: ImageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         rootElement = ActivityEditAdsBinding.inflate(layoutInflater)
@@ -28,6 +29,11 @@ class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
         super.onCreate(savedInstanceState)
         setContentView(rootView)
         init()
+    }
+
+    private fun init() {
+        imageAdapter = ImageAdapter()
+        rootElement.vpImages.adapter = imageAdapter
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -70,10 +76,6 @@ class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    private fun init() {
-
-    }
-
     fun onClickSelectCountry(view: View) {
         val listCountry = LocalityHelper.getAllCountries(this)
         DialogSpinnerHelper().showSpinnerDialog(this, listCountry, rootElement.tvCountryEditAds)
@@ -97,7 +99,8 @@ class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
         ImagePicker.getImages(this, 3)
     }
 
-    override fun onFragClose() {
+    override fun onFragClose(map: List<String>) {
+        imageAdapter.update(map)
         rootElement.scrollviewMain.visibility = View.VISIBLE
     }
 }
