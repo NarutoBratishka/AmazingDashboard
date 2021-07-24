@@ -73,4 +73,9 @@ class ImageListFragment(private val fragCloseInterface: FragCloseInterface, priv
     fun updateAdapter(newList: List<String>) {
         adapter.updateAdapter(newList, false)
     }
+
+    fun setSingleImage(uri: String, pos: Int) {
+        adapter.imageList[pos] = uri
+        adapter.notifyDataSetChanged()
+    }
 }

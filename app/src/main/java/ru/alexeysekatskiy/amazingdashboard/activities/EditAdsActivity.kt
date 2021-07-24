@@ -23,6 +23,7 @@ class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
     private var selectImageFrag: ImageListFragment? = null
     lateinit var rootElement: ActivityEditAdsBinding
     private lateinit var imageAdapter: ImageAdapter
+    var editImagePos = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         rootElement = ActivityEditAdsBinding.inflate(layoutInflater)
@@ -39,7 +40,7 @@ class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == ImagePicker.REQUEST_CODE) {
+        if (resultCode == Activity.RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_IMAGES) {
             data?.let {
                 val returnValue: List<String>? = it.getStringArrayListExtra(Pix.IMAGE_RESULTS)
 
@@ -48,6 +49,14 @@ class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
                 } else if (selectImageFrag != null) {
                     selectImageFrag?.updateAdapter(returnValue)
                 }; it
+            }
+        } else if (resultCode == Activity.RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGE) {
+            data?.let {
+                val returnValue: List<String>? = it.getStringArrayListExtra(Pix.IMAGE_RESULTS)
+
+                if (returnValue?.size!! != 0 && selectImageFrag != null) {
+                    selectImageFrag?.setSingleImage(returnValue[0], editImagePos)
+                }
             }
         }
     }
