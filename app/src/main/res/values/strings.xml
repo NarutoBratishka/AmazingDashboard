@@ -37,4 +37,8 @@
     <!-- Edit Activity    -->
     <string name="select_country">*Выберите страну</string>
     <string name="select_city">*Выберите город</string>
+
+    <!-- Menu Select Image    -->
+    <string name="m_select_image_delete">Удалить</string>
+    <string name="m_select_image_add">Добавить изображение</string>
 </resources>
