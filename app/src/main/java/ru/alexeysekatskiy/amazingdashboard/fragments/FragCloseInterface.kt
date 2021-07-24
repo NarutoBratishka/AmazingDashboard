@@ -1,5 +1,5 @@
 package ru.alexeysekatskiy.amazingdashboard.fragments
 
 interface FragCloseInterface {
-    fun onFragClose(map: List<String>)
+    fun onFragClose(list: List<String>)
 }

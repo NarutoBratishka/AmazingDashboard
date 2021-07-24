@@ -38,17 +38,12 @@ class ImageListFragment(private val fragCloseInterface: FragCloseInterface, priv
         recyclerView.adapter = adapter
         touchHelper.attachToRecyclerView(recyclerView)
 
-        val newList = mutableListOf<SelectImageItem>()
-        for (i in images.indices) {
-            newList.add(SelectImageItem("${i+1}", images[i])) //todo fix naming
-        }
-        adapter.updateAdapter(newList)
-
+        adapter.updateAdapter(images)
     }
 
     override fun onDetach() {
         super.onDetach()
-        fragCloseInterface.onFragClose(adapter.imageList.map { it.uri })
+        fragCloseInterface.onFragClose(adapter.imageList)
     }
 
     private fun setUpToolbar() {
@@ -76,10 +71,6 @@ class ImageListFragment(private val fragCloseInterface: FragCloseInterface, priv
     }
 
     fun updateAdapter(newList: List<String>) {
-        val toAddList = mutableListOf<SelectImageItem>()
-        for (i in adapter.imageList.size until (adapter.imageList.size + newList.size)) {
-            toAddList.add(SelectImageItem("${i+1}", newList[i - adapter.imageList.size])) //todo fix naming
-        }
-        adapter.updateAdapter(toAddList, false)
+        adapter.updateAdapter(newList, false)
     }
 }

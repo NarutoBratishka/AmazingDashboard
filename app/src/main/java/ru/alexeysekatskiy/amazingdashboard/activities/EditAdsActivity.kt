@@ -104,8 +104,8 @@ class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
         ImagePicker.getImages(this, 3)
     }
 
-    override fun onFragClose(map: List<String>) {
-        imageAdapter.update(map)
+    override fun onFragClose(list: List<String>) {
+        imageAdapter.update(list)
         rootElement.scrollviewMain.visibility = View.VISIBLE
         selectImageFrag = null
     }
