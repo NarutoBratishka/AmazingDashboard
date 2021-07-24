@@ -41,10 +41,11 @@ class SelectImageRVAdapter: RecyclerView.Adapter<SelectImageRVAdapter.ImageHolde
         notifyDataSetChanged()
     }
 
-    class ImageHolder(itemView: View, val context: Context) : RecyclerView.ViewHolder(itemView) {
+    inner class ImageHolder(itemView: View, val context: Context) : RecyclerView.ViewHolder(itemView) {
         val tvTitle: TextView = itemView.findViewById(R.id.tv_title)
         val image: ImageView = itemView.findViewById(R.id.image_content)
         val remainImage: ImageButton = itemView.findViewById(R.id.im_edit_image)
+        val deleteImage: ImageButton = itemView.findViewById(R.id.im_delete_image)
 
         fun setData(item: String) {
             image.setImageURI(Uri.parse(item))
@@ -53,6 +54,12 @@ class SelectImageRVAdapter: RecyclerView.Adapter<SelectImageRVAdapter.ImageHolde
             remainImage.setOnClickListener {
                 ImagePicker.getImages(context as EditAdsActivity, 1, REQUEST_CODE_GET_SINGLE_IMAGE)
                 context.editImagePos = adapterPosition
+            }
+            deleteImage.setOnClickListener {
+                imageList.removeAt(adapterPosition)
+                this@SelectImageRVAdapter.notifyItemRemoved(adapterPosition)
+
+                for (n in 0 until imageList.size) this@SelectImageRVAdapter.notifyItemChanged(n)
             }
         }
     }
