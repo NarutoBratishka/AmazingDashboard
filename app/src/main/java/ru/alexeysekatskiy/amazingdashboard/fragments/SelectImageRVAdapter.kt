@@ -61,8 +61,9 @@ class SelectImageRVAdapter: RecyclerView.Adapter<SelectImageRVAdapter.ImageHolde
         }
     }
 
-    fun updateAdapter(newList: List<SelectImageItem>) {
-        imageList.clear()
+    fun updateAdapter(newList: List<SelectImageItem>, clear: Boolean = true) {
+        if (clear) imageList.clear()
+
         imageList.addAll(newList)
         notifyDataSetChanged()
     }

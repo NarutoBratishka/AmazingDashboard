@@ -20,6 +20,7 @@ import ru.alexeysekatskiy.amazingdashboard.utils.LocalityHelper
 
 
 class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
+    private var selectImageFrag: ImageListFragment? = null
     lateinit var rootElement: ActivityEditAdsBinding
     private lateinit var imageAdapter: ImageAdapter
 
@@ -42,12 +43,16 @@ class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
             data?.let {
                 val returnValue: List<String>? = it.getStringArrayListExtra(Pix.IMAGE_RESULTS)
 
-                if (returnValue?.size!! > 1) {
+                if (returnValue?.size!! > 1 && selectImageFrag == null) {
+                    selectImageFrag = ImageListFragment(this, returnValue)
+
                     rootElement.scrollviewMain.visibility = View.GONE
                     val fragMan = supportFragmentManager.beginTransaction()
-                    fragMan.replace(R.id.place_holder, ImageListFragment(this, returnValue))
+                    fragMan.replace(R.id.place_holder, selectImageFrag!!)
                     fragMan.commit()
-                }
+                } else if (selectImageFrag != null) {
+                    selectImageFrag?.updateAdapter(returnValue)
+                }; it
             }
         }
     }
@@ -102,5 +107,6 @@ class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
     override fun onFragClose(map: List<String>) {
         imageAdapter.update(map)
         rootElement.scrollviewMain.visibility = View.VISIBLE
+        selectImageFrag = null
     }
 }
