@@ -44,12 +44,7 @@ class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
                 val returnValue: List<String>? = it.getStringArrayListExtra(Pix.IMAGE_RESULTS)
 
                 if (returnValue?.size!! > 1 && selectImageFrag == null) {
-                    selectImageFrag = ImageListFragment(this, returnValue)
-
-                    rootElement.scrollviewMain.visibility = View.GONE
-                    val fragMan = supportFragmentManager.beginTransaction()
-                    fragMan.replace(R.id.place_holder, selectImageFrag!!)
-                    fragMan.commit()
+                    openChooseImageFrag(returnValue)
                 } else if (selectImageFrag != null) {
                     selectImageFrag?.updateAdapter(returnValue)
                 }; it
@@ -101,12 +96,24 @@ class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
     }
 
     fun onClickGetImages(view: View) {
-        ImagePicker.getImages(this, 3)
+        if (imageAdapter.mainList.size == 0)
+            ImagePicker.getImages(this, 3)
+        else
+            openChooseImageFrag(imageAdapter.mainList)
     }
 
     override fun onFragClose(list: List<String>) {
         imageAdapter.update(list)
         rootElement.scrollviewMain.visibility = View.VISIBLE
         selectImageFrag = null
+    }
+
+    private fun openChooseImageFrag(newList: List<String>) {
+        selectImageFrag = ImageListFragment(this, newList)
+
+        rootElement.scrollviewMain.visibility = View.GONE
+        val fragMan = supportFragmentManager.beginTransaction()
+        fragMan.replace(R.id.place_holder, selectImageFrag!!)
+        fragMan.commit()
     }
 }

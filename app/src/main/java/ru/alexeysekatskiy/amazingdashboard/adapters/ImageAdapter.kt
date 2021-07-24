@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.alexeysekatskiy.amazingdashboard.R
 
 class ImageAdapter: RecyclerView.Adapter<ImageAdapter.ImageHolder>() {
-    private val mainList = mutableListOf<String>()
+    val mainList = mutableListOf<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.image_adapter_item, parent, false)
