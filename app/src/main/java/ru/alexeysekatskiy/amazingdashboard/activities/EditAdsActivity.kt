@@ -46,6 +46,8 @@ class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
 
                 if (returnValue?.size!! > 1 && selectImageFrag == null) {
                     openChooseImageFrag(returnValue)
+                } else if (returnValue.size == 1 && selectImageFrag == null) {
+                    imageAdapter.update(returnValue)
                 } else if (selectImageFrag != null) {
                     selectImageFrag?.updateAdapter(returnValue)
                 }; it
