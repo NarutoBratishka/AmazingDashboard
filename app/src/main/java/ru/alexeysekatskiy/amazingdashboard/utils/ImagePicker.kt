@@ -35,6 +35,7 @@ object ImagePicker {
 
                 if (returnValue?.size!! > 1 && edAct.selectImageFrag == null) {
                     edAct.openChooseImageFrag(returnValue)
+
                 } else if (returnValue.size == 1 && edAct.selectImageFrag == null) {
                     edAct.rootElement.prBarEditAct.visibility = View.VISIBLE
                     CoroutineScope(Dispatchers.Main).launch {
@@ -42,6 +43,7 @@ object ImagePicker {
                         edAct.rootElement.prBarEditAct.visibility = View.GONE
                         edAct.imageAdapter.update(bitmapList)
                     }
+
                 } else if (edAct.selectImageFrag != null) {
                     edAct.selectImageFrag?.updateAdapter(returnValue)
                 }; it

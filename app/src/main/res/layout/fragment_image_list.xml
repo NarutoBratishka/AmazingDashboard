@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,6 +9,8 @@
         android:id="@+id/rc_view_select_image"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/image_list_background"
+        android:paddingTop="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,10 +20,11 @@
         android:id="@+id/tb_image_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@android:color/white"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:navigationIcon="?attr/homeAsUpIndicator"
+        android:theme="@style/ActionBarCustom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="207dp" />
+        app:navigationIcon="?attr/homeAsUpIndicator" />
 </androidx.constraintlayout.widget.ConstraintLayout>

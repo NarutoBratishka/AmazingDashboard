@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="my_favorite_color">#3AEBCA</color>
     <color name="dark_cyan">#2E4A4D</color>
+
+    <color name="image_background">#E6E6E6</color>
+    <color name="image_list_background">#CCCCCC</color>
 </resources>
