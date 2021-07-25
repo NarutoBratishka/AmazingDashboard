@@ -9,8 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import ru.alexeysekatskiy.amazingdashboard.R
 import ru.alexeysekatskiy.amazingdashboard.databinding.FragmentImageListBinding
+import ru.alexeysekatskiy.amazingdashboard.utils.ImageManager
 import ru.alexeysekatskiy.amazingdashboard.utils.ImagePicker
 import ru.alexeysekatskiy.amazingdashboard.utils.ItemTouchMoveCallback
 
@@ -19,6 +24,7 @@ class ImageListFragment(private val fragCloseInterface: FragCloseInterface, priv
     val adapter = SelectImageRVAdapter()
     val dragCallback = ItemTouchMoveCallback(adapter)
     val touchHelper = ItemTouchHelper(dragCallback)
+    private lateinit var job: Job
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,12 +44,19 @@ class ImageListFragment(private val fragCloseInterface: FragCloseInterface, priv
         recyclerView.adapter = adapter
         touchHelper.attachToRecyclerView(recyclerView)
 
-        adapter.updateAdapter(images)
+//        adapter.updateAdapter(images)
+        job = CoroutineScope(Dispatchers.Main).launch {
+            val result = ImageManager.imageResize(images)
+            result.forEach {
+                Log.d("qwe: ratio", "After (W/H): ${it.width} / ${it.height}")
+            }
+        }
     }
 
     override fun onDetach() {
         super.onDetach()
         fragCloseInterface.onFragClose(adapter.imageList)
+        job.cancel()
     }
 
     private fun setUpToolbar() {

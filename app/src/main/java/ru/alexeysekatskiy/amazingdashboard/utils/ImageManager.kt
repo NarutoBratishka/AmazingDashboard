@@ -4,6 +4,9 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.exifinterface.media.ExifInterface
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import java.io.File
 
 object ImageManager {
@@ -39,7 +42,7 @@ object ImageManager {
         return rotation
     }
 
-    fun imageResize(uris: List<String>): List<ImageBounds> {
+    suspend fun imageResize(uris: List<String>): List<ImageBounds> = withContext(Dispatchers.IO){
         val tempList = mutableListOf<ImageBounds>()  //списки объектов с параметрами width & height
 //        uris.forEach {  }
         uris.forEachIndexed { index, uri ->
@@ -59,11 +62,12 @@ object ImageManager {
                     tempList.add(ImageBounds(size.width, size.height))
             }
 
-            Log.d("qwe: ratio", "Before -> After (W/H): ${size.width} / ${size.height} -> " +
-                    "${tempList[index].width} / ${tempList[index].height}")
+            Log.d("qwe: ratio", "Before(W/H): ${size.width} / ${size.height} -> ")
 
         }
-        return tempList
+
+        delay(10000)
+        return@withContext tempList
     }
 
     data class ImageBounds(val width: Int, val height: Int)
