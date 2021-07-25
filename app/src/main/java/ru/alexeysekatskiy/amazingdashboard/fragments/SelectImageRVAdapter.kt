@@ -43,6 +43,7 @@ class SelectImageRVAdapter(var adapterCallback: AdapterCallback): RecyclerView.A
     inner class ImageHolder(val viewBinding: SelectImageFragItemBinding, val context: Context) : RecyclerView.ViewHolder(viewBinding.root) {
 
         fun setData(bitmap: Bitmap) {
+            ImageManager.chooseScaleType(viewBinding.imageContent, bitmap)
             viewBinding.imageContent.setImageBitmap(bitmap)
             viewBinding.tvTitle.text = context.resources.getStringArray(R.array.title_image_array)[adapterPosition]
 
