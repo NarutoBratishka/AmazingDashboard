@@ -1,20 +1,23 @@
 package ru.alexeysekatskiy.amazingdashboard.utils
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.exifinterface.media.ExifInterface
 import java.io.File
 
 object ImageManager {
+    const val MAX_IMAGE_SIZE = 1280
 
-    fun getImageSize(uri: String): List<Int> {
+    fun getImageSize(uri: String): ImageBounds {
         val options = BitmapFactory.Options().apply {
             inJustDecodeBounds = true
         }
         BitmapFactory.decodeFile(uri, options)
         return if (getImageRotation(uri) == 0)
-            listOf(options.outWidth, options.outHeight)
+            ImageBounds(options.outWidth, options.outHeight)
         else
-            listOf(options.outHeight, options.outWidth)
+            ImageBounds(options.outHeight, options.outWidth)
 
     }
 
@@ -35,4 +38,33 @@ object ImageManager {
 
         return rotation
     }
+
+    fun imageResize(uris: List<String>): List<ImageBounds> {
+        val tempList = mutableListOf<ImageBounds>()  //списки объектов с параметрами width & height
+//        uris.forEach {  }
+        uris.forEachIndexed { index, uri ->
+            val size = getImageSize(uri)
+
+            val imageRatio = size.width.toFloat() / size.height
+
+            if (imageRatio > 1) {       // Horizontal (width > height)
+                if (size.width > MAX_IMAGE_SIZE)
+                    tempList.add(ImageBounds(MAX_IMAGE_SIZE, (MAX_IMAGE_SIZE / imageRatio).toInt()))
+                else
+                    tempList.add(ImageBounds(size.width, size.height))
+            } else {                    // Vertical (height > width)
+                if (size.height > MAX_IMAGE_SIZE)
+                    tempList.add(ImageBounds((MAX_IMAGE_SIZE * imageRatio).toInt(), MAX_IMAGE_SIZE))
+                else
+                    tempList.add(ImageBounds(size.width, size.height))
+            }
+
+            Log.d("qwe: ratio", "Before -> After (W/H): ${size.width} / ${size.height} -> " +
+                    "${tempList[index].width} / ${tempList[index].height}")
+
+        }
+        return tempList
+    }
+
+    data class ImageBounds(val width: Int, val height: Int)
 }
