@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import ru.alexeysekatskiy.amazingdashboard.databinding.ActivityEditAdsBinding
 import ru.alexeysekatskiy.amazingdashboard.dialogs.DialogSpinnerHelper
 import ru.alexeysekatskiy.amazingdashboard.fragments.FragCloseInterface
 import ru.alexeysekatskiy.amazingdashboard.fragments.ImageListFragment
+import ru.alexeysekatskiy.amazingdashboard.utils.ImageManager
 import ru.alexeysekatskiy.amazingdashboard.utils.ImagePicker
 import ru.alexeysekatskiy.amazingdashboard.utils.LocalityHelper
 
@@ -47,7 +49,11 @@ class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
                 if (returnValue?.size!! > 1 && selectImageFrag == null) {
                     openChooseImageFrag(returnValue)
                 } else if (returnValue.size == 1 && selectImageFrag == null) {
+                    val tempBounds = ImageManager.getImageSize(returnValue[0])
+                    Log.d("qwe: bounds", "Image Width: ${tempBounds[0]}")
+                    Log.d("qwe: bounds", "Image Height: ${tempBounds[1]}")
                     imageAdapter.update(returnValue)
+
                 } else if (selectImageFrag != null) {
                     selectImageFrag?.updateAdapter(returnValue)
                 }; it
