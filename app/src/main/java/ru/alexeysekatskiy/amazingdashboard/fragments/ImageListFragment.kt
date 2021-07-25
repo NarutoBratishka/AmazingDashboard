@@ -7,7 +7,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -98,11 +100,14 @@ class ImageListFragment(private val fragCloseInterface: FragCloseInterface, priv
     }
 
     fun setSingleImage(uri: String, pos: Int) {
+        val prBar = rootElement.rcViewSelectImage[pos].findViewById<ProgressBar>(R.id.pr_bar_image_item)
+        prBar.visibility = View.VISIBLE
         job = CoroutineScope(Dispatchers.Main).launch {
             val bitmapList = ImageManager.imageResize(listOf(uri))
+            prBar.visibility = View.GONE
 
             adapter.imageList[pos] = bitmapList[0]
-            adapter.notifyDataSetChanged()
+            adapter.notifyItemChanged(pos)
         }
     }
 }
