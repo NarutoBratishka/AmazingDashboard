@@ -67,7 +67,7 @@ class ImageListFragment(private val fragCloseInterface: FragCloseInterface, priv
             val dialog = ProgressDialog.createProgressDialog(activity as Activity)
             val bitmapList = ImageManager.imageResize(images)
             dialog.dismiss()
-            adapter.updateAdapter(bitmapList)
+            adapter.updateAdapter(bitmapList, clear)
         }
     }
 
