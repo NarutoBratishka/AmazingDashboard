@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
@@ -20,15 +21,17 @@ import kotlinx.coroutines.launch
 import ru.alexeysekatskiy.amazingdashboard.R
 import ru.alexeysekatskiy.amazingdashboard.databinding.FragmentImageListBinding
 import ru.alexeysekatskiy.amazingdashboard.dialogs.ProgressDialog
+import ru.alexeysekatskiy.amazingdashboard.utils.AdapterCallback
 import ru.alexeysekatskiy.amazingdashboard.utils.ImageManager
 import ru.alexeysekatskiy.amazingdashboard.utils.ImagePicker
 import ru.alexeysekatskiy.amazingdashboard.utils.ItemTouchMoveCallback
 
-class ImageListFragment(private val fragCloseInterface: FragCloseInterface, private val images: List<String>?): Fragment() {
+class ImageListFragment(private val fragCloseInterface: FragCloseInterface, private val images: List<String>?): Fragment(), AdapterCallback {
     lateinit var rootElement: FragmentImageListBinding
-    val adapter = SelectImageRVAdapter()
+    val adapter = SelectImageRVAdapter(this)
     val dragCallback = ItemTouchMoveCallback(adapter)
     val touchHelper = ItemTouchHelper(dragCallback)
+    private var addItem: MenuItem? = null
     private var job: Job? = null
 
     override fun onCreateView(
@@ -68,13 +71,15 @@ class ImageListFragment(private val fragCloseInterface: FragCloseInterface, priv
             val bitmapList = ImageManager.imageResize(images)
             dialog.dismiss()
             adapter.updateAdapter(bitmapList, clear)
+
+            addItem?.isVisible = adapter.imageList.size <= 2
         }
     }
 
     private fun setUpToolbar() {
         rootElement.tbImageList.inflateMenu(R.menu.menu_select_image)
         val deleteItem = rootElement.tbImageList.menu.findItem(R.id.id_delete_image)
-        val addItem = rootElement.tbImageList.menu.findItem(R.id.id_add_image)
+        addItem = rootElement.tbImageList.menu.findItem(R.id.id_add_image)
 
         rootElement.tbImageList.setNavigationOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()?.remove(this@ImageListFragment)?.commit()
@@ -82,10 +87,11 @@ class ImageListFragment(private val fragCloseInterface: FragCloseInterface, priv
 
         deleteItem.setOnMenuItemClickListener {
             adapter.updateAdapter(listOf())
+            addItem?.isVisible = true
             true
         }
 
-        addItem.setOnMenuItemClickListener {
+        addItem?.setOnMenuItemClickListener {
             val count = ImagePicker.MAX_IMAGE_COUNT - adapter.imageList.size
             if (count > 0) {
                 ImagePicker.getImages(activity as AppCompatActivity, count)
@@ -109,5 +115,9 @@ class ImageListFragment(private val fragCloseInterface: FragCloseInterface, priv
             adapter.imageList[pos] = bitmapList[0]
             adapter.notifyItemChanged(pos)
         }
+    }
+
+    override fun onItemDelete() {
+        addItem?.isVisible = true
     }
 }
