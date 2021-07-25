@@ -1,5 +1,6 @@
 package ru.alexeysekatskiy.amazingdashboard.fragments
 
+import android.app.Activity
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import ru.alexeysekatskiy.amazingdashboard.R
 import ru.alexeysekatskiy.amazingdashboard.databinding.FragmentImageListBinding
+import ru.alexeysekatskiy.amazingdashboard.dialogs.ProgressDialog
 import ru.alexeysekatskiy.amazingdashboard.utils.ImageManager
 import ru.alexeysekatskiy.amazingdashboard.utils.ImagePicker
 import ru.alexeysekatskiy.amazingdashboard.utils.ItemTouchMoveCallback
@@ -45,12 +47,7 @@ class ImageListFragment(private val fragCloseInterface: FragCloseInterface, priv
         recyclerView.adapter = adapter
         touchHelper.attachToRecyclerView(recyclerView)
 
-        if (images != null) {
-            job = CoroutineScope(Dispatchers.Main).launch {
-                val bitmapList = ImageManager.imageResize(images)
-                adapter.updateAdapter(bitmapList)
-            }
-        }
+        if (images != null) resizeSelectedImages(images)
     }
 
     fun updateAdapterFromEdit(bitmapList: List<Bitmap>) {
@@ -61,6 +58,15 @@ class ImageListFragment(private val fragCloseInterface: FragCloseInterface, priv
         super.onDetach()
         fragCloseInterface.onFragClose(adapter.imageList)
         job?.cancel()
+    }
+
+    private fun resizeSelectedImages(images: List<String>, clear: Boolean = true) {
+        job = CoroutineScope(Dispatchers.Main).launch {
+            val dialog = ProgressDialog.createProgressDialog(activity as Activity)
+            val bitmapList = ImageManager.imageResize(images)
+            dialog.dismiss()
+            adapter.updateAdapter(bitmapList)
+        }
     }
 
     private fun setUpToolbar() {
@@ -88,10 +94,7 @@ class ImageListFragment(private val fragCloseInterface: FragCloseInterface, priv
     }
 
     fun updateAdapter(newList: List<String>) {
-        job = CoroutineScope(Dispatchers.Main).launch {
-            val bitmapList = ImageManager.imageResize(newList)
-            adapter.updateAdapter(bitmapList, false)
-        }
+        resizeSelectedImages(newList, false)
     }
 
     fun setSingleImage(uri: String, pos: Int) {
