@@ -1,34 +1,27 @@
 package ru.alexeysekatskiy.amazingdashboard.activities
 
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import ru.alexeysekatskiy.amazingdashboard.R
 import ru.alexeysekatskiy.amazingdashboard.adapters.ImageAdapter
 import ru.alexeysekatskiy.amazingdashboard.databinding.ActivityEditAdsBinding
 import ru.alexeysekatskiy.amazingdashboard.dialogs.DialogSpinnerHelper
 import ru.alexeysekatskiy.amazingdashboard.fragments.FragCloseInterface
 import ru.alexeysekatskiy.amazingdashboard.fragments.ImageListFragment
-import ru.alexeysekatskiy.amazingdashboard.utils.ImageManager
 import ru.alexeysekatskiy.amazingdashboard.utils.ImagePicker
 import ru.alexeysekatskiy.amazingdashboard.utils.LocalityHelper
 
 
 class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
-    private var selectImageFrag: ImageListFragment? = null
+    var selectImageFrag: ImageListFragment? = null
     lateinit var rootElement: ActivityEditAdsBinding
-    private lateinit var imageAdapter: ImageAdapter
+    lateinit var imageAdapter: ImageAdapter
     var editImagePos = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,30 +39,8 @@ class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_IMAGES) {
-            data?.let {
-                val returnValue: List<String>? = it.getStringArrayListExtra(Pix.IMAGE_RESULTS)
 
-                if (returnValue?.size!! > 1 && selectImageFrag == null) {
-                    openChooseImageFrag(returnValue)
-                } else if (returnValue.size == 1 && selectImageFrag == null) {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        val bitmapList = ImageManager.imageResize(returnValue)
-                        imageAdapter.update(bitmapList)
-                    }
-                } else if (selectImageFrag != null) {
-                    selectImageFrag?.updateAdapter(returnValue)
-                }; it
-            }
-        } else if (resultCode == Activity.RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGE) {
-            data?.let {
-                val returnValue: List<String>? = it.getStringArrayListExtra(Pix.IMAGE_RESULTS)
-
-                if (returnValue?.size!! != 0 && selectImageFrag != null) {
-                    selectImageFrag?.setSingleImage(returnValue[0], editImagePos)
-                }
-            }
-        }
+        ImagePicker.onGetImages(resultCode, requestCode, data, this)
     }
 
     override fun onRequestPermissionsResult(
@@ -130,7 +101,7 @@ class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
         selectImageFrag = null
     }
 
-    private fun openChooseImageFrag(newList: List<String>?) {
+    fun openChooseImageFrag(newList: List<String>?) {
         selectImageFrag = ImageListFragment(this, newList)
 
         rootElement.scrollviewMain.visibility = View.GONE
