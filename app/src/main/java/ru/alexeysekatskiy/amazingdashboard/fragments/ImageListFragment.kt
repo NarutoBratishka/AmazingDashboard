@@ -1,5 +1,6 @@
 package ru.alexeysekatskiy.amazingdashboard.fragments
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,12 +20,12 @@ import ru.alexeysekatskiy.amazingdashboard.utils.ImageManager
 import ru.alexeysekatskiy.amazingdashboard.utils.ImagePicker
 import ru.alexeysekatskiy.amazingdashboard.utils.ItemTouchMoveCallback
 
-class ImageListFragment(private val fragCloseInterface: FragCloseInterface, private val images: List<String>): Fragment() {
+class ImageListFragment(private val fragCloseInterface: FragCloseInterface, private val images: List<String>?): Fragment() {
     lateinit var rootElement: FragmentImageListBinding
     val adapter = SelectImageRVAdapter()
     val dragCallback = ItemTouchMoveCallback(adapter)
     val touchHelper = ItemTouchHelper(dragCallback)
-    private lateinit var job: Job
+    private var job: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,19 +45,22 @@ class ImageListFragment(private val fragCloseInterface: FragCloseInterface, priv
         recyclerView.adapter = adapter
         touchHelper.attachToRecyclerView(recyclerView)
 
-//        adapter.updateAdapter(images)
-        job = CoroutineScope(Dispatchers.Main).launch {
-            val result = ImageManager.imageResize(images)
-            result.forEach {
-                Log.d("qwe: ratio", "After (W/H): ${it.width} / ${it.height}")
+        if (images != null) {
+            job = CoroutineScope(Dispatchers.Main).launch {
+                val bitmapList = ImageManager.imageResize(images)
+                adapter.updateAdapter(bitmapList)
             }
         }
+    }
+
+    fun updateAdapterFromEdit(bitmapList: List<Bitmap>) {
+        adapter.updateAdapter(bitmapList)
     }
 
     override fun onDetach() {
         super.onDetach()
         fragCloseInterface.onFragClose(adapter.imageList)
-        job.cancel()
+        job?.cancel()
     }
 
     private fun setUpToolbar() {
@@ -75,20 +79,27 @@ class ImageListFragment(private val fragCloseInterface: FragCloseInterface, priv
 
         addItem.setOnMenuItemClickListener {
             val count = ImagePicker.MAX_IMAGE_COUNT - adapter.imageList.size
-//            if (count > 0) {
+            if (count > 0) {
                 ImagePicker.getImages(activity as AppCompatActivity, count)
                 Log.d("qwe: menuImageList", "Add item")
                 true
-//            } else false
+            } else false
         }
     }
 
     fun updateAdapter(newList: List<String>) {
-        adapter.updateAdapter(newList, false)
+        job = CoroutineScope(Dispatchers.Main).launch {
+            val bitmapList = ImageManager.imageResize(newList)
+            adapter.updateAdapter(bitmapList, false)
+        }
     }
 
     fun setSingleImage(uri: String, pos: Int) {
-        adapter.imageList[pos] = uri
-        adapter.notifyDataSetChanged()
+        job = CoroutineScope(Dispatchers.Main).launch {
+            val bitmapList = ImageManager.imageResize(listOf(uri))
+
+            adapter.imageList[pos] = bitmapList[0]
+            adapter.notifyDataSetChanged()
+        }
     }
 }

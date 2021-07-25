@@ -3,6 +3,7 @@ package ru.alexeysekatskiy.amazingdashboard.activities
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,6 +11,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import ru.alexeysekatskiy.amazingdashboard.R
 import ru.alexeysekatskiy.amazingdashboard.adapters.ImageAdapter
 import ru.alexeysekatskiy.amazingdashboard.databinding.ActivityEditAdsBinding
@@ -49,11 +53,10 @@ class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
                 if (returnValue?.size!! > 1 && selectImageFrag == null) {
                     openChooseImageFrag(returnValue)
                 } else if (returnValue.size == 1 && selectImageFrag == null) {
-                    val tempBounds = ImageManager.getImageSize(returnValue[0])
-                    Log.d("qwe: bounds", "Image Width: ${tempBounds[0]}")
-                    Log.d("qwe: bounds", "Image Height: ${tempBounds[1]}")
-                    imageAdapter.update(returnValue)
-
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val bitmapList = ImageManager.imageResize(returnValue)
+                        imageAdapter.update(bitmapList)
+                    }
                 } else if (selectImageFrag != null) {
                     selectImageFrag?.updateAdapter(returnValue)
                 }; it
@@ -115,17 +118,19 @@ class EditAdsActivity : AppCompatActivity(), FragCloseInterface {
     fun onClickGetImages(view: View) {
         if (imageAdapter.mainList.size == 0)
             ImagePicker.getImages(this, 3)
-        else
-            openChooseImageFrag(imageAdapter.mainList)
+        else {
+            openChooseImageFrag(null)
+            selectImageFrag?.updateAdapterFromEdit(imageAdapter.mainList)
+        }
     }
 
-    override fun onFragClose(list: List<String>) {
+    override fun onFragClose(list: List<Bitmap>) {
         imageAdapter.update(list)
         rootElement.scrollviewMain.visibility = View.VISIBLE
         selectImageFrag = null
     }
 
-    private fun openChooseImageFrag(newList: List<String>) {
+    private fun openChooseImageFrag(newList: List<String>?) {
         selectImageFrag = ImageListFragment(this, newList)
 
         rootElement.scrollviewMain.visibility = View.GONE

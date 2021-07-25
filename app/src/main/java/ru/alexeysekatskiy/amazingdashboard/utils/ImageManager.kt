@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.exifinterface.media.ExifInterface
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -42,10 +43,10 @@ object ImageManager {
         return rotation
     }
 
-    suspend fun imageResize(uris: List<String>): List<ImageBounds> = withContext(Dispatchers.IO){
+    suspend fun imageResize(uris: List<String>): List<Bitmap> = withContext(Dispatchers.IO){
         val tempList = mutableListOf<ImageBounds>()  //списки объектов с параметрами width & height
-//        uris.forEach {  }
-        uris.forEachIndexed { index, uri ->
+        val bitmapList = mutableListOf<Bitmap>()
+        uris.forEach { uri ->
             val size = getImageSize(uri)
 
             val imageRatio = size.width.toFloat() / size.height
@@ -66,8 +67,21 @@ object ImageManager {
 
         }
 
-        delay(10000)
-        return@withContext tempList
+        uris.forEachIndexed { index, uri ->
+            val ex = kotlin.runCatching {
+                bitmapList.add(Picasso.get().load(
+                        File(uri)).resize(
+                        tempList[index].width,
+                        tempList[index].height
+                ).get()
+                )
+            }
+
+            Log.d("qwe: ImageMan.resize", "Bitmap load pic #$index done: ${ex.isSuccess}")
+        }
+
+
+        return@withContext bitmapList
     }
 
     data class ImageBounds(val width: Int, val height: Int)

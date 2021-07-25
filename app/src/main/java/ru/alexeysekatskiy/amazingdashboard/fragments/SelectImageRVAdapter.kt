@@ -1,6 +1,7 @@
 package ru.alexeysekatskiy.amazingdashboard.fragments
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,7 @@ import ru.alexeysekatskiy.amazingdashboard.utils.ImagePicker.REQUEST_CODE_GET_SI
 import ru.alexeysekatskiy.amazingdashboard.utils.ItemTouchMoveCallback
 
 class SelectImageRVAdapter: RecyclerView.Adapter<SelectImageRVAdapter.ImageHolder>(), ItemTouchMoveCallback.ItemTouchCallbackInterface {
-    var imageList = mutableListOf<String>()
+    var imageList = mutableListOf<Bitmap>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.select_image_frag_item, parent, false)
@@ -47,8 +48,8 @@ class SelectImageRVAdapter: RecyclerView.Adapter<SelectImageRVAdapter.ImageHolde
         val remainImage: ImageButton = itemView.findViewById(R.id.im_edit_image)
         val deleteImage: ImageButton = itemView.findViewById(R.id.im_delete_image)
 
-        fun setData(item: String) {
-            image.setImageURI(Uri.parse(item))
+        fun setData(bitmap: Bitmap) {
+            image.setImageBitmap(bitmap)
             tvTitle.text = context.resources.getStringArray(R.array.title_image_array)[adapterPosition]
 
             remainImage.setOnClickListener {
@@ -64,7 +65,7 @@ class SelectImageRVAdapter: RecyclerView.Adapter<SelectImageRVAdapter.ImageHolde
         }
     }
 
-    fun updateAdapter(newList: List<String>, clear: Boolean = true) {
+    fun updateAdapter(newList: List<Bitmap>, clear: Boolean = true) {
         if (clear) imageList.clear()
 
         imageList.addAll(newList)
