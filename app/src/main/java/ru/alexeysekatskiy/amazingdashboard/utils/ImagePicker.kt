@@ -2,6 +2,7 @@ package ru.alexeysekatskiy.amazingdashboard.utils
 
 import android.app.Activity
 import android.content.Intent
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.fxn.pix.Options
 import com.fxn.pix.Pix
@@ -35,8 +36,10 @@ object ImagePicker {
                 if (returnValue?.size!! > 1 && edAct.selectImageFrag == null) {
                     edAct.openChooseImageFrag(returnValue)
                 } else if (returnValue.size == 1 && edAct.selectImageFrag == null) {
+                    edAct.rootElement.prBarEditAct.visibility = View.VISIBLE
                     CoroutineScope(Dispatchers.Main).launch {
                         val bitmapList = ImageManager.imageResize(returnValue)
+                        edAct.rootElement.prBarEditAct.visibility = View.GONE
                         edAct.imageAdapter.update(bitmapList)
                     }
                 } else if (edAct.selectImageFrag != null) {
